@@ -1,0 +1,19 @@
+$dark: #F3E9F1;
+$jumbotron-bg: #F3E9F1;
+
+footer{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+footer a{
+    color: black;
+}
+
+footer a:hover{
+    text-decoration: none;
+    color: black;
+}
+
+$jumbotron-padding: .5rem;

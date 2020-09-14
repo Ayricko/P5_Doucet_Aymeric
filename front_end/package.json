@@ -1,0 +1,26 @@
+{
+  "name": "orinoco",
+  "version": "1.0.0",
+  "description": "construction du site de vente en ligne d'appareil photo vintage",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ayricko/P5_Doucet_Aymeric.git"
+  },
+  "keywords": [
+    "appareil",
+    "vintage"
+  ],
+  "author": "Aymeric DOUCET",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ayricko/P5_Doucet_Aymeric/issues"
+  },
+  "homepage": "https://github.com/Ayricko/P5_Doucet_Aymeric#readme",
+  "dependencies": {
+    "bootstrap": "^4.5.2"
+  }
+}
