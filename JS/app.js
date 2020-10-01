@@ -1,28 +1,22 @@
 const url = `http://localhost:3000/api/cameras`;
 fetch(url)
   .then((response) => response.json())
-  .then((principalArray) => {
-    let carteProduit = ` `;
-    for (let i = 0; i < principalArray.length; i++) {
-      carteProduit += ` <div class="col mb-3">
+  .then((mainArray) => {
+    let carteProduitIndex = ` `;
+    for (let cam of mainArray) {
+      carteProduitIndex += ` <div class="col-6 col-lg mb-3">
                             <div class="card text-center shadow">
-                                <a href="produit.html?id=${principalArray[i]._id}"><img src="${principalArray[i].imageUrl}" class="img-fluid p-3" /></a>
+                                <img src="${cam.imageUrl}" class="img-fluid p-3" />
                                 <div class="card-body">
-                                    <h5 class="card-title">${principalArray[i].name}</h5>
-                                    <div class="price card-text my-3">${principalArray[i].price / 100} €</div>
-                                    <p>
-                                        <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseExample${i}" aria-expanded="false" aria-controls="collapseExample${i}">Description</button>
-                                    </p>
-                                    <div class="collapse" id="collapseExample${i}">
-                                        <div class="card card-body mb-3">
-                                            <div class="description card-text">${principalArray[i].description}</div>
-                                        </div>
-                                    </div>
+                                    <h5 class="card-title">${cam.name}</h5>
+                                    <div class="price card-text my-3">${cam.price / 100} €</div>
+                                    <a class="btn btn-secondary panier" href="produit.html?id=${cam._id}" role="button">Détails</a>
                                 </div>
                             </div>
                         </div>`;
     }
-    document.querySelector('.cameraCard').innerHTML = carteProduit;
+    document.querySelector('.cameraCard').innerHTML = carteProduitIndex;
+    produitDansPanier();
   })
   .catch(
     (document.querySelector('.cameraCard').innerHTML = `<section class='jumBotron'>
@@ -39,3 +33,19 @@ fetch(url)
         </div>
       </section>`)
   );
+
+function produitDansPanier() {
+  if (localStorage.length === 1) {
+    let navBarPanier = document.querySelector('.panier');
+    let storage = localStorage.length;
+    navBarPanier.innerHTML = `${storage} article dans le panier`;
+  } else if (localStorage.length > 1) {
+    let navBarPanier = document.querySelector('.panier');
+    let storage = localStorage.length;
+    navBarPanier.innerHTML = `${storage} articles dans le panier`;
+  } else {
+    let navBarPanier = document.querySelector('.panier');
+    let storage = localStorage.length;
+    navBarPanier.innerHTML = `Panier vide`;
+  }
+}

@@ -13,7 +13,7 @@
   </head>
 
   <body>
-    <section class="barreNavigation">
+    <section class="barreNavigation mb-3">
       <div class="bg-secondary">
         <div class="container">
           <div class="row">
@@ -33,11 +33,11 @@
                     <a class="nav-link" href="produit.html">Votre produit</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="panier.html">Panier</a>
+                    <a class="nav-link panierV" href="panier.html">Panier</a>
                   </li>
-                  <li class="nav-item">
+                  <!-- <li class="nav-item">
                     <a class="nav-link" href="commande.html">Votre commande</a>
-                  </li>
+                  </li> -->
                 </ul>
               </div>
             </nav>
@@ -45,21 +45,17 @@
         </div>
       </div>
     </section>
-    <section class="jumBotron">
+    <section class="Card">
       <div class="container">
-        <div class="row mt-3">
-          <div class="col">
-            <div class="jumbotron bg-secondary py-3">
-              <h3 class="text-center">Votre selection</h3>
+        <div class="row justify-content-center mb-5">
+          <div class="col-lg-5 mb-3">
+            <div class="card text-center shadow">
+              <div class="card-body">
+                <div class="cameraCardProduit"></div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section class="Card">
-      <div class="container">
-        <div class="row justify-content-center mb-5 cameraCard"></div>
         <div class="row mb-5"></div>
       </div>
     </section>
@@ -79,7 +75,6 @@
       </div>
     </footer>
 
-    <!-- <script src="JS/main.js" ></script> -->
     <script src="JS/produit.js"></script>
     <!-- Script bon fonctionnement bootstrap-->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
