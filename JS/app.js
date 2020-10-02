@@ -16,7 +16,6 @@ fetch(url)
                         </div>`;
     }
     document.querySelector('.cameraCard').innerHTML = carteProduitIndex;
-    produitDansPanier();
   })
   .catch(
     (document.querySelector('.cameraCard').innerHTML = `<section class='jumBotron'>
@@ -33,19 +32,15 @@ fetch(url)
         </div>
       </section>`)
   );
-
-function produitDansPanier() {
-  if (localStorage.length === 1) {
-    let navBarPanier = document.querySelector('.panier');
-    let storage = localStorage.length;
-    navBarPanier.innerHTML = `${storage} article dans le panier`;
-  } else if (localStorage.length > 1) {
-    let navBarPanier = document.querySelector('.panier');
-    let storage = localStorage.length;
-    navBarPanier.innerHTML = `${storage} articles dans le panier`;
-  } else {
-    let navBarPanier = document.querySelector('.panier');
-    let storage = localStorage.length;
-    navBarPanier.innerHTML = `Panier vide`;
-  }
+if (localStorage.length === 1) {
+  let navBarPanier = document.querySelector('.panier');
+  let storage = localStorage.length;
+  navBarPanier.innerHTML = `${storage} article dans le panier`;
+} else if (localStorage.length > 1) {
+  let navBarPanier = document.querySelector('.panier');
+  let storage = localStorage.length;
+  navBarPanier.innerHTML = `${storage} articles dans le panier`;
+} else {
+  let navBarPanier = document.querySelector('.panier');
+  navBarPanier.innerHTML = `Panier vide`;
 }

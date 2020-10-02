@@ -1,6 +1,6 @@
 // On enferme le resultat de (window.location.search) dans une const, ce resultat correspond aux info qui se situent à la fin de notre URL
 const params = new URLSearchParams(window.location.search);
-//console.log(params);
+console.log(window.location.search);
 // On enferme le resultat de params.get('id') dans une const, ce resultat correspond aux infos qui se situent dans le nom id de l'url, id a été defini dans app.js, il aurait pu avoir n'importe quel nom.
 const camId = params.get('id');
 //console.log(camId);
@@ -51,8 +51,8 @@ fetch(url)
     }
     carteProduit += `   </select>`;
     carteProduit += `<h6>Quantité de ${nom} à mettre au panier:</h6>
-                          <input class="col-3 mb-3 text-center" type="number" name="quantite" id="quantiteValeur" step="1" value="0" min="1" max="10">
-                   <div> <a class="btn btn-secondary panier" href="panier.html" role="button">Ajouter au panier</a></div>`;
+                          <input class="col-3 mb-3 border rounded text-center" type="number" name="quantite" id="quantiteValeur" step="1" value="0" min="1" max="10">
+                   <div> <a class="btn btn-secondary panier" href="panier.html" role="button" disabled>Ajouter au panier</a></div>`;
     document.querySelector('.cameraCardProduit').innerHTML = carteProduit;
     return camArray;
   })
@@ -96,17 +96,13 @@ fetch(url)
         </div>
       </section>`)
   );
-
+// Nombre de produit associer a panier dans la barre de naviguation
 if (localStorage.length === 1) {
-  let navBarPanier = document.querySelector('.panierV');
+  let navBarPanier = document.querySelector('.panierNavBar');
   let storage = localStorage.length;
   navBarPanier.innerHTML = `${storage} article dans le panier`;
 } else if (localStorage.length > 1) {
-  let navBarPanier = document.querySelector('.panierV');
+  let navBarPanier = document.querySelector('.panierNavBar');
   let storage = localStorage.length;
   navBarPanier.innerHTML = `${storage} articles dans le panier`;
-} else {
-  let navBarPanier = document.querySelector('.panierV');
-  let storage = localStorage.length;
-  navBarPanier.innerHTML = `Panier vide`;
 }
