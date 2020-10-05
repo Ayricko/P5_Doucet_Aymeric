@@ -6,11 +6,11 @@ fetch(url)
     for (let cam of mainArray) {
       carteProduitIndex += ` <div class="col-6 col-lg mb-3">
                             <div class="card text-center shadow">
-                                <img src="${cam.imageUrl}" class="img-fluid p-3" />
+                                <img src="${cam.imageUrl}" class="img-fluid p-3" alt="camera vintage ${cam.name}"/>
                                 <div class="card-body">
                                     <h5 class="card-title">${cam.name}</h5>
                                     <div class="price card-text my-3">${cam.price / 100} €</div>
-                                    <a class="btn btn-secondary panier" href="produit.html?id=${cam._id}" role="button">Détails</a>
+                                    <a class="btn btn-secondary panier" href="produit.html?id=${cam._id}" role="button">Produit</a>
                                 </div>
                             </div>
                         </div>`;
@@ -32,15 +32,13 @@ fetch(url)
         </div>
       </section>`)
   );
+
 if (localStorage.length === 1) {
   let navBarPanier = document.querySelector('.panier');
   let storage = localStorage.length;
-  navBarPanier.innerHTML = `${storage} article dans le panier`;
+  navBarPanier.innerHTML = `${storage} référence dans le panier`;
 } else if (localStorage.length > 1) {
   let navBarPanier = document.querySelector('.panier');
   let storage = localStorage.length;
-  navBarPanier.innerHTML = `${storage} articles dans le panier`;
-} else {
-  let navBarPanier = document.querySelector('.panier');
-  navBarPanier.innerHTML = `Panier vide`;
+  navBarPanier.innerHTML = `${storage} références dans le panier`;
 }

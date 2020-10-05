@@ -1,12 +1,13 @@
 // On enferme le resultat de (window.location.search) dans une const, ce resultat correspond aux info qui se situent à la fin de notre URL
 const params = new URLSearchParams(window.location.search);
-console.log(window.location.search);
+// console.log(window.location.search);
 // On enferme le resultat de params.get('id') dans une const, ce resultat correspond aux infos qui se situent dans le nom id de l'url, id a été defini dans app.js, il aurait pu avoir n'importe quel nom.
 const camId = params.get('id');
 //console.log(camId);
 // on enferme dans une const le lien vers l'api de la camera recherchée en fonction de son id
 const url = `http://localhost:3000/api/cameras/${camId}`;
 
+const key = 'panier';
 let id;
 let prix;
 let image;
@@ -17,7 +18,6 @@ let lensesRow;
 let lenseOption;
 let quantité;
 let carteProduit = ` `;
-let commande = {};
 
 // réalise une requete vers l'api de la camera recherchée en fonction de son id
 fetch(url)
@@ -51,34 +51,47 @@ fetch(url)
     }
     carteProduit += `   </select>`;
     carteProduit += `<h6>Quantité de ${nom} à mettre au panier:</h6>
-                          <input class="col-3 mb-3 border rounded text-center" type="number" name="quantite" id="quantiteValeur" step="1" value="0" min="1" max="10">
-                   <div> <a class="btn btn-secondary panier" href="panier.html" role="button" disabled>Ajouter au panier</a></div>`;
+                          <input class="col-3 mb-3 border rounded text-center" type="number" name="quantite" id="quantiteValeur" step="1" value="0" min="1" max="10" required>
+                   <div> <a class="btn btn-secondary addPanier" href="panier.html" role="button" disabled="disabled">Ajouter au panier</a></div>`;
     document.querySelector('.cameraCardProduit').innerHTML = carteProduit;
     return camArray;
   })
-  //Choix de la lentille // quantité souhaitée // localStorage
   .then((camArray) => {
+    //Choix de la lentille
     lensesRow = document.querySelector('select.lense');
     lensesRow.addEventListener('change', function () {
       lenseOption = this.options[this.selectedIndex].text;
     });
+    // quantité souhaitée
     let quantitéChoix = document.querySelector('input');
     quantitéChoix.addEventListener('change', function () {
       quantité = this.value;
     });
-    let ajouterAuPanier = document.querySelector('.panier');
-    ajouterAuPanier.addEventListener('click', function () {
-      commande = {
+
+    // localStorage
+    function ajouterItem(key) {
+      key.push({
         nom: nom,
         photo: image,
         quantité: quantité,
-        prixTotal: quantité * prix + '€',
+        prixTotal: quantité * prix,
         lentille: lenseOption,
         id: id,
-      };
-      let commandeLocalStorage = JSON.stringify(commande);
-      let key = 'idInStorage' + (localStorage.length + 1);
-      localStorage.setItem(key, commandeLocalStorage);
+      });
+    }
+    let ajouterAuPanier = document.querySelector('.addPanier');
+    ajouterAuPanier.addEventListener('click', function () {
+      if (localStorage.length == 0) {
+        let pannier = [];
+        ajouterItem(pannier);
+        localStorage.setItem(key, JSON.stringify(pannier));
+      } else {
+        let pannierInitial = localStorage.getItem('panier');
+        let newPannier = JSON.parse(pannierInitial);
+        ajouterItem(newPannier);
+        let commandeLocalStorage = JSON.stringify(newPannier);
+        localStorage.setItem(key, commandeLocalStorage);
+      }
     });
   })
   .catch(
@@ -96,13 +109,13 @@ fetch(url)
         </div>
       </section>`)
   );
-// Nombre de produit associer a panier dans la barre de naviguation
+// Nombre de produit associer a l'onglet panier dans la barre de naviguation
 if (localStorage.length === 1) {
-  let navBarPanier = document.querySelector('.panierNavBar');
+  let navBarPanier = document.querySelector('.panier');
   let storage = localStorage.length;
-  navBarPanier.innerHTML = `${storage} article dans le panier`;
+  navBarPanier.innerHTML = `${storage} référence dans le panier`;
 } else if (localStorage.length > 1) {
-  let navBarPanier = document.querySelector('.panierNavBar');
+  let navBarPanier = document.querySelector('.panier');
   let storage = localStorage.length;
-  navBarPanier.innerHTML = `${storage} articles dans le panier`;
+  navBarPanier.innerHTML = `${storage} références dans le panier`;
 }
