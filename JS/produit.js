@@ -52,11 +52,12 @@ fetch(url)
     carteProduit += `   </select>`;
     carteProduit += `<h6>Quantité de ${nom} à mettre au panier:</h6>
                           <input class="col-3 mb-3 border rounded text-center" type="number" name="quantite" id="quantiteValeur" step="1" value="0" min="1" max="10" required>
-                   <div> <a class="btn btn-secondary addPanier" href="panier.html" role="button" disabled="disabled">Ajouter au panier</a></div>`;
+                   <div><a class="btn btn-secondary addPanier disabled" href="panier.html">Ajouter au panier</a></div>`;
     document.querySelector('.cameraCardProduit').innerHTML = carteProduit;
     return camArray;
   })
   .then((camArray) => {
+    let ajouterAuPanier = document.querySelector('.addPanier');
     //Choix de la lentille
     lensesRow = document.querySelector('select.lense');
     lensesRow.addEventListener('change', function () {
@@ -66,6 +67,9 @@ fetch(url)
     let quantitéChoix = document.querySelector('input');
     quantitéChoix.addEventListener('change', function () {
       quantité = this.value;
+      if (lenseOption !== undefined) {
+        document.querySelector('.addPanier').classList.remove('disabled');
+      }
     });
 
     // localStorage
@@ -79,7 +83,7 @@ fetch(url)
         id: id,
       });
     }
-    let ajouterAuPanier = document.querySelector('.addPanier');
+
     ajouterAuPanier.addEventListener('click', function () {
       if (localStorage.length == 0) {
         let pannier = [];

@@ -6,12 +6,13 @@ let quantitéItem;
 let prixItem;
 let quantitéTotal = 0;
 let prixTotal = 0;
-let nom;
-let prenom;
-let email;
-let adresse;
-let ville;
+// let nom;
+// let prenom;
+// let email;
+// let adresse;
+// let ville;
 let contact = {};
+
 //Action si le localStorage est vide
 if (localStorage.length == 0) {
   carteProduit += `<h5 class="col text-center bg-secondary py-4 rounded">Votre panier est vide</h5>`;
@@ -21,11 +22,9 @@ if (localStorage.length == 0) {
   let array = localStorage.getItem('panier');
   let items = JSON.parse(array);
   for (let item of items) {
-    carteProduit += `<div class="row bg-secondary rounded py-2 mb-2">
-                        <div class="col-md-2 my-auto">
-                            <a href="produit.html?id=${item.id}" role="button">
-                                <img src="${item.photo}" class="img-fluid" alt="camera vintage ${item.nom}"/>
-                            </a>
+    carteProduit += `<div class="row bg-secondary rounded py-3 mb-2">
+                        <div class="col-10 col-md-2 m-auto mx-lg-0">
+                            <img src="${item.photo}" class="img-fluid " alt="camera vintage ${item.nom}"/>
                         </div>
                         <div class="col-md-2 my-auto text-center">
                             <h5 class="m-0">${item.nom}</h5>
@@ -40,7 +39,8 @@ if (localStorage.length == 0) {
                             <strong>Prix:</strong> ${item.prixTotal} €
                         </div>
                             <a class="btn border m-auto text-center" href="#" role="button">X</a>
-                        </div>`;
+                        </div>
+                    </div>`;
     document.querySelector('.items').innerHTML = carteProduit;
 
     // Affichage du récapitulatif de commande
@@ -60,81 +60,168 @@ if (localStorage.length == 0) {
   }
 
   // Formulaire
-  carteValidation += `<div class='container'>
-      <div class='row pt-2 justify-content-around'>
-        <p>
-          <button class='btn btn-secondary' type='button' data-toggle='collapse' data-target='#collapseExample' aria-expanded='false' aria-controls='collapseExample'>
-            Validation du panier
-          </button>
-          <a class="btn btn-secondary my-3 supprimer" href="panier.html" role="button">Vider le panier</a>
-          </p>
-      </div>
-      <div class='row'>
-        <div class='col-12'>
-          <div class='collapse' id='collapseExample'>
-            <div class='card card-body mx-1'>
-              <form action="" method="POST">
-                <div class='form-row'>
-                  <div class='form-group col-md-6'>
-                    <label for='inputNom'>Nom</label>
-                    <input type='text' class='form-control' name='inputNom'required/>
-                  </div>
-                  <div class='form-group col-md-6'>
-                    <label for='inputPrenom'>Prénom</label>
-                    <input type='text' class='form-control' name='inputPrenom' required/>
-                  </div>
-                </div>
-                <div class='form-row'>
-                    <div class='form-group col-md-6'>
-                        <label for='inputAdresse'>Adresse</label>
-                        <input type='text' class='form-control' name='inputAdresse' placeholder='Numéro, rue...' required/>
-                    </div>
-                    <div class='form-group col-md-6'>
-                        <label for='inputVille'>Ville</label>
-                        <input type='text' class='form-control' name='inputVille' required/>
-                    </div>
-                </div>
-                <div class='form-row'>
-                  <div class='form-group col-md-6'>
-                    <label for='inputEmail'>Email</label>
-                    <input type='email' class='form-control' name='inputEmail' placeholder='Email' required/>
-                  </div>
-                </div>
-                <div class='row justify-content-center'>
-                  <button type='submit' class='btn btn-secondary validationFormulaire'>
-                    Valider votre panier
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
+  carteValidation += `
+    <div class='container'>
+        <div class='row pt-2 justify-content-around'>
+            <p>
+            <button class='btn btn-secondary' type='button' data-toggle='collapse' data-target='#collapseExample' aria-expanded='false' aria-controls='collapseExample'>
+                Validation du panier
+            </button>
+            <a class="btn btn-secondary my-3 supprimer" href="panier.html" role="button">Vider le panier</a>
+            </p>
         </div>
-      </div>
+        <div class='collapse ' id='collapseExample'>
+            <div class='card card-body col-lg-6 mx-1 mx-lg-auto'>
+                <form action="" method="POST" id="formulaireValidation" >
+                    <div class='form-group'>
+                        <label for='nom'>Nom</label>
+                        <input type='text' class='form-control' name='nom'required/>
+                        <small></small>
+                    </div>
+                    <div class='form-group'>
+                        <label for='prenom'>Prénom</label>
+                        <input type='text' class='form-control' name='prenom' required/>
+                        <small></small>
+                    </div>
+                    <div class='form-group'>
+                        <label for='adresse'>Adresse</label>
+                        <input type='text' class='form-control' name='adresse' placeholder='Numéro rue...' required/>
+                        <small></small>
+                    </div>
+                    <div class='form-group'>
+                        <label for='ville'>Ville</label>
+                        <input type='text' class='form-control' name='ville' required/>
+                        <small></small>
+                    </div>
+                    <div class='form-group'>
+                        <label for='cp'>Code Postal</label>
+                        <input type='text' class='form-control' name='cp' required/>
+                        <small></small>
+                    </div>
+                    <div class='form-group'>
+                        <label for='email'>Email</label>
+                        <input type='email' class='form-control' name='email' placeholder='Email' required/>
+                        <small></small>
+                    </div>
+                    <div class='row justify-content-center'>
+                        <button type='submit' class='btn btn-secondary validationFormulaire'>
+                        Commander
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
     <div class="row m-5"></div>`;
   document.querySelector('.formulaire').innerHTML = carteValidation;
-
   // Suppresion des articles dans le panier
   document.querySelector('.supprimer').addEventListener('click', function () {
     localStorage.clear();
   });
-
-  // Traitement des données du formulaire
-  document.querySelector('.validationFormulaire').addEventListener('click', function () {
-    nom = inputNom.value;
-    prenom = inputPrenom.value;
-    email = inputEmail.value;
-    adresse = inputAdresse.value;
-    ville = inputVille.value;
-    contact = {
-      nom: nom,
-      prénom: prenom,
-      email: email,
-      adresse: adresse,
-      ville: ville,
-    };
-  });
 }
+
+// Traitement des données du formulaire
+let form = document.querySelector('#formulaireValidation');
+
+//RegExp
+let prenomNomVilleRegExp = /^[a-zA-Z ]+$/;
+let cpRegExp = /^((0[1-9])|([1-8][0-9])|(9[0-8])|(2A)|(2B))[0-9]{3}$/;
+let adresseRegExp = /^[0-9 ]*([a-zA-Z0-9\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*[0-9a-zA-Z ]*$/;
+let emailRegExp = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/;
+
+// Ecouter la soumission du formulaire
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  if (validInput(form.nom) && validInput(form.prenom) && validAdresse(form.adresse) && validInput(form.ville) && validCp(form.cp) && validEmail(form.email)) {
+    form.submit();
+  }
+});
+// Ecouteur Nom
+form.nom.addEventListener('change', function () {
+  validInput(this);
+});
+// Création de la fonction de test et de la validation de la RegExp
+const validInput = (texteDansNom) => {
+  let small = texteDansNom.nextElementSibling;
+  if (prenomNomVilleRegExp.test(texteDansNom.value)) {
+    small.innerHTML = 'Forme Valide';
+    small.classList.remove('text-danger');
+    small.classList.add('text-success');
+    return true;
+  } else {
+    small.innerHTML = 'forme non valide';
+    small.classList.remove('text-success');
+    small.classList.add('text-danger');
+    return false;
+  }
+};
+// Ecouteur Prenom
+form.prenom.addEventListener('change', function () {
+  validInput(this);
+});
+
+// Ecouteur Adresse
+form.adresse.addEventListener('change', function () {
+  validAdresse(this);
+});
+const validAdresse = (texteDansAdresse) => {
+  let small = texteDansAdresse.nextElementSibling;
+  if (adresseRegExp.test(texteDansAdresse.value)) {
+    small.innerHTML = 'Adresse Valide';
+    small.classList.remove('text-danger');
+    small.classList.add('text-success');
+    return true;
+  } else {
+    small.innerHTML = 'Adresse non valide';
+    small.classList.remove('text-success');
+    small.classList.add('text-danger');
+    return false;
+  }
+};
+
+// Ecouteur Ville
+form.ville.addEventListener('change', function () {
+  validInput(this);
+});
+
+// Ecouteur Cp
+form.cp.addEventListener('change', function () {
+  validCp(this);
+});
+const validCp = (texteDansCp) => {
+  let small = texteDansCp.nextElementSibling;
+  if (cpRegExp.test(texteDansCp.value)) {
+    small.innerHTML = 'Valide';
+    small.classList.remove('text-danger');
+    small.classList.add('text-success');
+    return true;
+  } else {
+    small.innerHTML = 'Forme non valide';
+    small.classList.remove('text-success');
+    small.classList.add('text-danger');
+    return false;
+  }
+};
+
+// Ecouteur Email
+form.email.addEventListener('change', function () {
+  validEmail(this);
+});
+const validEmail = (texteDansEmail) => {
+  let small = texteDansEmail.nextElementSibling;
+  if (emailRegExp.test(texteDansEmail.value)) {
+    small.innerHTML = 'Email Valide';
+    small.classList.remove('text-danger');
+    small.classList.add('text-success');
+    return true;
+  } else {
+    small.innerHTML = 'Email non valide';
+    small.classList.remove('text-success');
+    small.classList.add('text-danger');
+    return false;
+  }
+};
+
 // Nombre de référence associé à l'onglet panier dans la barre de naviguation
 if (localStorage.length < 1) {
   let navBarPanier = document.querySelector('.panier');
