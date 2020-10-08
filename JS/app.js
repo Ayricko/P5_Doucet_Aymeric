@@ -32,13 +32,3 @@ fetch(url)
         </div>
       </section>`)
   );
-
-// if (localStorage.length === 1) {
-//   let navBarPanier = document.querySelector('.panier');
-//   let storage = localStorage.length;
-//   navBarPanier.innerHTML = `${storage} référence dans le panier`;
-// } else if (localStorage.length > 1) {
-//   let navBarPanier = document.querySelector('.panier');
-//   let storage = localStorage.length;
-//   navBarPanier.innerHTML = `${storage} références dans le panier`;
-// }

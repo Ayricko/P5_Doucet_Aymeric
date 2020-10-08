@@ -1,4 +1,4 @@
-//Création des différentes variables à portée globale
+// Création des différentes variables à portée globale
 let carteProduit = ` `;
 let commandeRecap = ` `;
 let carteValidation = ` `;
@@ -8,12 +8,12 @@ let quantitéTotal = 0;
 let prixTotal = 0;
 const products = [];
 
-//Action si le localStorage est vide
+// Action si le localStorage est vide
 if (localStorage.length == 0) {
   carteProduit += `<h5 class="col text-center bg-secondary py-4 rounded">Votre panier est vide</h5>`;
   document.querySelector('.items').innerHTML = carteProduit;
 
-  //Affichage des produits dans le panier
+  // Affichage des produits dans le panier
 } else {
   let array = localStorage.getItem('panier');
   let items = JSON.parse(array);
@@ -48,12 +48,15 @@ if (localStorage.length == 0) {
     prixItem = parseInt(item.prixTotal);
     prixTotal += prixItem;
     if (quantitéTotal > 1) {
-      commandeRecap = `<div class="col text-center bg-secondary py-2 rounded">Votre commande est composée de <strong>${quantitéTotal} articles</strong> pour un montant total de <strong>${prixTotal}€</strong></div>`;
+      commandeRecap = ` <div class="col-6 text-center bg-secondary py-2 rounded">
+                          <div class="col">Articles: <strong>${quantitéTotal}</strong> - Montant total: <strong>${prixTotal}€</strong></div>
+                        </div>`;
       document.querySelector('.recapCommande').innerHTML = commandeRecap;
     } else {
-      commandeRecap = `<div class="col text-center bg-secondary py-2 rounded">Le montant total de votre commande est de <strong>${prixTotal}€</strong>`;
+      commandeRecap = `<div class="col text-center bg-secondary py-2 rounded">Montant total: <strong>${prixTotal}€</strong>`;
       document.querySelector('.recapCommande').innerHTML = commandeRecap;
     }
+    // Push des item.id dans la variable products pour requete Post
     products.push(item.id);
   }
 
@@ -137,13 +140,14 @@ const validationRegExp = (champCible, regExp, message) => {
 // Création de la varibale form pour accrocher les infos du formulaire
 let form = document.querySelector('#formulaireValidation');
 
-//RegExp
-let prenomNomVilleRegExp = /^[a-zA-Z ]+$/;
+// RegExp
+let prenomNomRegExp = /^[a-zA-Z ]+$/;
+let villeRegExp = /[a-zA-Z]{1,20}/;
 let cpRegExp = /^((0[1-9])|([1-8][0-9])|(9[0-8])|(2A)|(2B))[0-9]{3}$/;
-let adresseRegExp = /^[0-9 ]*([a-zA-Z0-9\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*[0-9a-zA-Z ]*$/;
-let emailRegExp = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/;
+let adresseRegExp = /[0-9]{1,5}\s[a-zA-Z]{1,10}\s([a-zA-Z\s]{1,50}){1,5}/;
+let emailRegExp = /[a-zA-Z0-9\.]{1,50}@[a-zA-Z]{1,50}\.[a-zA-Z]{1,8}/;
 
-//Variable des input => utilisation dans la validation des champs et dans l'envoi des données pour la confirmation de commande
+// Variable des input => utilisation dans la validation des champs et dans l'envoi des données pour la confirmation de commande
 let nom = form.nom;
 let prenom = form.prenom;
 let ville = form.ville;
@@ -153,18 +157,19 @@ let email = form.email;
 const contact = {};
 
 // Validation des champs
-validationRegExp(nom, prenomNomVilleRegExp, 'Nom');
-validationRegExp(prenom, prenomNomVilleRegExp, 'Prénom');
-validationRegExp(ville, prenomNomVilleRegExp, 'Ville');
+validationRegExp(nom, prenomNomRegExp, 'Nom');
+validationRegExp(prenom, prenomNomRegExp, 'Prénom');
+validationRegExp(ville, villeRegExp, 'Ville');
 validationRegExp(adresse, adresseRegExp, 'adresse');
 validationRegExp(cp, cpRegExp, 'code_postale');
 validationRegExp(email, emailRegExp, 'email');
 
-//Validation et envoi du formulaire
+// Validation et envoi du formulaire
 
 form.addEventListener('submit', function (e) {
+  // Annulation de la fonction submit par defaut du bouton
   e.preventDefault();
-  // création de l'objet contact
+  // Création de l'objet contact
   const contact = {
     firstName: prenom.value,
     lastName: nom.value,
@@ -195,12 +200,3 @@ form.addEventListener('submit', function (e) {
       alert('Echec de communication avec notre serveur.');
     });
 });
-
-// Nombre de référence associé à l'onglet panier dans la barre de naviguation
-if (localStorage.length < 1) {
-  let navBarPanier = document.querySelector('.panier');
-  navBarPanier.innerHTML = `Panier`;
-} else {
-  let navBarPanier = document.querySelector('.panier');
-  navBarPanier.innerHTML = `Panier ${quantitéTotal}`;
-}
