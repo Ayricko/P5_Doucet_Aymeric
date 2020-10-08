@@ -4,10 +4,10 @@ const params = new URLSearchParams(window.location.search);
 // On enferme le resultat de params.get('id') dans une const, ce resultat correspond aux infos qui se situent dans le nom id de l'url, id a été defini dans app.js, il aurait pu avoir n'importe quel nom.
 const camId = params.get('id');
 //console.log(camId);
-// on enferme dans une const le lien vers l'api de la camera recherchée en fonction de son id
+//On enferme dans une const le lien vers l'api de la camera recherchée en fonction de son id
 const url = `http://localhost:3000/api/cameras/${camId}`;
 
-const key = 'panier';
+//Création des varibale à portée globale
 let id;
 let prix;
 let image;
@@ -19,12 +19,12 @@ let lenseOption;
 let quantité;
 let carteProduit = ` `;
 
-// réalise une requete vers l'api de la camera recherchée en fonction de son id
+//Réalisation de la requete vers l'api de la camera recherchée en fonction de son id
 fetch(url)
-  //on transforme le resultat de la requete (response) en document json (response.json)
+  //Transformation du resultat de la requete (response) en document json (response.json)
   .then((response) => response.json())
-  //on recupere le resultat de response.json (qu'on appelle par un nom random (ici camArray)) et on ouvre la fonction
-  // attribution des variables
+  //Récuperation du resultat de response.json (qu'on appelle par un nom random (ici camArray)) et on ouvre la fonction
+  //Attribution de valeur aux variables
   .then((camArray) => {
     id = camArray._id;
     prix = camArray.price / 100;
@@ -63,7 +63,7 @@ fetch(url)
     lensesRow.addEventListener('change', function () {
       lenseOption = this.options[this.selectedIndex].text;
     });
-    // quantité souhaitée
+    //Quantité souhaitée
     let quantitéChoix = document.querySelector('input');
     quantitéChoix.addEventListener('change', function () {
       quantité = this.value;
@@ -72,7 +72,7 @@ fetch(url)
       }
     });
 
-    // localStorage
+    //Envoi de données vers le localStorage
     function ajouterItem(key) {
       key.push({
         nom: nom,
@@ -88,13 +88,13 @@ fetch(url)
       if (localStorage.length == 0) {
         let pannier = [];
         ajouterItem(pannier);
-        localStorage.setItem(key, JSON.stringify(pannier));
+        localStorage.setItem('panier', JSON.stringify(pannier));
       } else {
         let pannierInitial = localStorage.getItem('panier');
         let newPannier = JSON.parse(pannierInitial);
         ajouterItem(newPannier);
         let commandeLocalStorage = JSON.stringify(newPannier);
-        localStorage.setItem(key, commandeLocalStorage);
+        localStorage.setItem('panier', commandeLocalStorage);
       }
     });
   })
@@ -113,13 +113,14 @@ fetch(url)
         </div>
       </section>`)
   );
+
 // Nombre de produit associer a l'onglet panier dans la barre de naviguation
-if (localStorage.length === 1) {
-  let navBarPanier = document.querySelector('.panier');
-  let storage = localStorage.length;
-  navBarPanier.innerHTML = `${storage} référence dans le panier`;
-} else if (localStorage.length > 1) {
-  let navBarPanier = document.querySelector('.panier');
-  let storage = localStorage.length;
-  navBarPanier.innerHTML = `${storage} références dans le panier`;
-}
+// if (localStorage.length === 1) {
+//   let navBarPanier = document.querySelector('.panier');
+//   let storage = localStorage.length;
+//   navBarPanier.innerHTML = `${storage} référence dans le panier`;
+// } else if (localStorage.length > 1) {
+//   let navBarPanier = document.querySelector('.panier');
+//   let storage = localStorage.length;
+//   navBarPanier.innerHTML = `${storage} références dans le panier`;
+// }

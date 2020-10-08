@@ -1,4 +1,4 @@
-//Création des différentes variables
+//Création des différentes variables à portée globale
 let carteProduit = ` `;
 let commandeRecap = ` `;
 let carteValidation = ` `;
@@ -6,17 +6,13 @@ let quantitéItem;
 let prixItem;
 let quantitéTotal = 0;
 let prixTotal = 0;
-// let nom;
-// let prenom;
-// let email;
-// let adresse;
-// let ville;
-let contact = {};
+const products = [];
 
 //Action si le localStorage est vide
 if (localStorage.length == 0) {
   carteProduit += `<h5 class="col text-center bg-secondary py-4 rounded">Votre panier est vide</h5>`;
   document.querySelector('.items').innerHTML = carteProduit;
+
   //Affichage des produits dans le panier
 } else {
   let array = localStorage.getItem('panier');
@@ -44,10 +40,11 @@ if (localStorage.length == 0) {
     document.querySelector('.items').innerHTML = carteProduit;
 
     // Affichage du récapitulatif de commande
-    // Quantité total d'article
+    // Calcul de la quantité total d'article
     quantitéItem = parseInt(item.quantité);
     quantitéTotal += quantitéItem;
-    // Prix total
+
+    // Calcul du prix total
     prixItem = parseInt(item.prixTotal);
     prixTotal += prixItem;
     if (quantitéTotal > 1) {
@@ -57,9 +54,10 @@ if (localStorage.length == 0) {
       commandeRecap = `<div class="col text-center bg-secondary py-2 rounded">Le montant total de votre commande est de <strong>${prixTotal}€</strong>`;
       document.querySelector('.recapCommande').innerHTML = commandeRecap;
     }
+    products.push(item.id);
   }
 
-  // Formulaire
+  // insertion du formulaire dans le panier
   carteValidation += `
     <div class='container'>
         <div class='row pt-2 justify-content-around'>
@@ -104,9 +102,7 @@ if (localStorage.length == 0) {
                         <small></small>
                     </div>
                     <div class='row justify-content-center'>
-                        <button type='submit' class='btn btn-secondary validationFormulaire'>
-                        Commander
-                        </button>
+                        <a class="btn btn-secondary disabled" id="validationFormulaire" href="#">Commander</a>
                     </div>
                 </form>
             </div>
@@ -114,6 +110,7 @@ if (localStorage.length == 0) {
     </div>
     <div class="row m-5"></div>`;
   document.querySelector('.formulaire').innerHTML = carteValidation;
+
   // Suppresion des articles dans le panier
   document.querySelector('.supprimer').addEventListener('click', function () {
     localStorage.clear();
@@ -121,6 +118,25 @@ if (localStorage.length == 0) {
 }
 
 // Traitement des données du formulaire
+// Création de la fonction de validation des RegExp
+const validationRegExp = (champCible, regExp, message) => {
+  champCible.addEventListener('change', function () {
+    let small = champCible.nextElementSibling;
+    if (regExp.test(champCible.value)) {
+      small.innerHTML = 'Valide';
+      small.classList.remove('text-danger');
+      small.classList.add('text-success');
+      document.querySelector('#validationFormulaire').classList.remove('disabled');
+    } else {
+      small.innerHTML = `Format ${message} non valide`;
+      small.classList.remove('text-success');
+      small.classList.add('text-danger');
+      document.querySelector('#validationFormulaire').classList.add('disabled');
+    }
+  });
+};
+
+// Création de la varibale form pour accrocher les infos du formulaire
 let form = document.querySelector('#formulaireValidation');
 
 //RegExp
@@ -129,98 +145,57 @@ let cpRegExp = /^((0[1-9])|([1-8][0-9])|(9[0-8])|(2A)|(2B))[0-9]{3}$/;
 let adresseRegExp = /^[0-9 ]*([a-zA-Z0-9\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*[0-9a-zA-Z ]*$/;
 let emailRegExp = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/;
 
-// Ecouter la soumission du formulaire
-form.addEventListener('submit', function (e) {
-  e.preventDefault();
-  if (validInput(form.nom) && validInput(form.prenom) && validAdresse(form.adresse) && validInput(form.ville) && validCp(form.cp) && validEmail(form.email)) {
-    form.submit();
-  }
-});
-// Ecouteur Nom
-form.nom.addEventListener('change', function () {
-  validInput(this);
-});
-// Création de la fonction de test et de la validation de la RegExp
-const validInput = (texteDansNom) => {
-  let small = texteDansNom.nextElementSibling;
-  if (prenomNomVilleRegExp.test(texteDansNom.value)) {
-    small.innerHTML = 'Forme Valide';
-    small.classList.remove('text-danger');
-    small.classList.add('text-success');
-    return true;
-  } else {
-    small.innerHTML = 'forme non valide';
-    small.classList.remove('text-success');
-    small.classList.add('text-danger');
-    return false;
-  }
-};
-// Ecouteur Prenom
-form.prenom.addEventListener('change', function () {
-  validInput(this);
-});
+//Variable des input => utilisation dans la validation des champs et dans l'envoi des données pour la confirmation de commande
+let nom = form.nom;
+let prenom = form.prenom;
+let ville = form.ville;
+let adresse = form.adresse;
+let cp = form.cp;
+let email = form.email;
+const contact = {};
 
-// Ecouteur Adresse
-form.adresse.addEventListener('change', function () {
-  validAdresse(this);
-});
-const validAdresse = (texteDansAdresse) => {
-  let small = texteDansAdresse.nextElementSibling;
-  if (adresseRegExp.test(texteDansAdresse.value)) {
-    small.innerHTML = 'Adresse Valide';
-    small.classList.remove('text-danger');
-    small.classList.add('text-success');
-    return true;
-  } else {
-    small.innerHTML = 'Adresse non valide';
-    small.classList.remove('text-success');
-    small.classList.add('text-danger');
-    return false;
-  }
-};
+// Validation des champs
+validationRegExp(nom, prenomNomVilleRegExp, 'Nom');
+validationRegExp(prenom, prenomNomVilleRegExp, 'Prénom');
+validationRegExp(ville, prenomNomVilleRegExp, 'Ville');
+validationRegExp(adresse, adresseRegExp, 'adresse');
+validationRegExp(cp, cpRegExp, 'code_postale');
+validationRegExp(email, emailRegExp, 'email');
 
-// Ecouteur Ville
-form.ville.addEventListener('change', function () {
-  validInput(this);
-});
+//Validation et envoi du formulaire
+// let small = document.querySelectorAll('small');
+// for (let smal of small) {
+//   if (smal.classList.contains('text-success')) {
+//     document.querySelector('#validationFormulaire').classList.remove('disabled');
+//   } else {
+//     document.querySelector('#validationFormulaire').classList.add('disabled');
+//     alert('Veuillez remplir les champs correctement');
+//   }
+// }
+document.querySelector('#validationFormulaire').addEventListener('click', function () {
+  // création de l'objet contact
+  const contact = {
+    firstName: prenom.value,
+    lastName: nom.value,
+    address: adresse.value,
+    city: ville.value,
+    email: email.value,
+  };
 
-// Ecouteur Cp
-form.cp.addEventListener('change', function () {
-  validCp(this);
+  // Création de la requete FETCH post
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ contact, products }),
+  };
+  fetch('http://localhost:3000/api/cameras/order', options)
+    .then((response) => response.json())
+    .then((objetPost) => {
+      console.log(objetPost);
+    });
 });
-const validCp = (texteDansCp) => {
-  let small = texteDansCp.nextElementSibling;
-  if (cpRegExp.test(texteDansCp.value)) {
-    small.innerHTML = 'Valide';
-    small.classList.remove('text-danger');
-    small.classList.add('text-success');
-    return true;
-  } else {
-    small.innerHTML = 'Forme non valide';
-    small.classList.remove('text-success');
-    small.classList.add('text-danger');
-    return false;
-  }
-};
-
-// Ecouteur Email
-form.email.addEventListener('change', function () {
-  validEmail(this);
-});
-const validEmail = (texteDansEmail) => {
-  let small = texteDansEmail.nextElementSibling;
-  if (emailRegExp.test(texteDansEmail.value)) {
-    small.innerHTML = 'Email Valide';
-    small.classList.remove('text-danger');
-    small.classList.add('text-success');
-    return true;
-  } else {
-    small.innerHTML = 'Email non valide';
-    small.classList.remove('text-success');
-    small.classList.add('text-danger');
-    return false;
-  }
-};
 
 // Nombre de référence associé à l'onglet panier dans la barre de naviguation
 if (localStorage.length < 1) {
