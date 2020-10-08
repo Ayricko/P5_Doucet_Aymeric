@@ -34,7 +34,7 @@ if (localStorage.length == 0) {
                         <div class="col-md-2 my-auto text-center">
                             <strong>Prix:</strong> ${item.prixTotal} €
                         </div>
-                            <a class="btn border m-auto text-center" href="#" role="button">X</a>
+                            <button type="button" class="btn border m-auto text-center">X</button>
                         </div>
                     </div>`;
     document.querySelector('.items').innerHTML = carteProduit;
@@ -102,7 +102,7 @@ if (localStorage.length == 0) {
                         <small></small>
                     </div>
                     <div class='row justify-content-center'>
-                        <a class="btn btn-secondary disabled" id="validationFormulaire" href="#">Commander</a>
+                        <input class="btn btn-secondary" type="submit" value="Commander">
                     </div>
                 </form>
             </div>
@@ -123,15 +123,13 @@ const validationRegExp = (champCible, regExp, message) => {
   champCible.addEventListener('change', function () {
     let small = champCible.nextElementSibling;
     if (regExp.test(champCible.value)) {
-      small.innerHTML = 'Valide';
+      small.innerHTML = `Format valide`;
       small.classList.remove('text-danger');
       small.classList.add('text-success');
-      document.querySelector('#validationFormulaire').classList.remove('disabled');
     } else {
       small.innerHTML = `Format ${message} non valide`;
       small.classList.remove('text-success');
       small.classList.add('text-danger');
-      document.querySelector('#validationFormulaire').classList.add('disabled');
     }
   });
 };
@@ -163,16 +161,9 @@ validationRegExp(cp, cpRegExp, 'code_postale');
 validationRegExp(email, emailRegExp, 'email');
 
 //Validation et envoi du formulaire
-// let small = document.querySelectorAll('small');
-// for (let smal of small) {
-//   if (smal.classList.contains('text-success')) {
-//     document.querySelector('#validationFormulaire').classList.remove('disabled');
-//   } else {
-//     document.querySelector('#validationFormulaire').classList.add('disabled');
-//     alert('Veuillez remplir les champs correctement');
-//   }
-// }
-document.querySelector('#validationFormulaire').addEventListener('click', function () {
+
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
   // création de l'objet contact
   const contact = {
     firstName: prenom.value,
@@ -193,7 +184,15 @@ document.querySelector('#validationFormulaire').addEventListener('click', functi
   fetch('http://localhost:3000/api/cameras/order', options)
     .then((response) => response.json())
     .then((objetPost) => {
-      console.log(objetPost);
+      let commandeArray = [];
+      commandeArray.push({ objetPost }, { prixTotal }, { quantitéTotal });
+      let commande = JSON.stringify(commandeArray);
+      console.log(commande);
+      localStorage.setItem('commande', commande);
+      document.location.href = 'commande.html';
+    })
+    .catch(function () {
+      alert('Echec de communication avec notre serveur.');
     });
 });
 
