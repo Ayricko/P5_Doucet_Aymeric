@@ -18,6 +18,7 @@ let lensesRow;
 let lenseOption;
 let quantité;
 let carteProduit = ` `;
+let pannier = [];
 
 //Réalisation de la requete vers l'api de la camera recherchée en fonction de son id
 fetch(url)
@@ -51,7 +52,7 @@ fetch(url)
     }
     carteProduit += `   </select>`;
     carteProduit += `<h6>Quantité de ${nom} à mettre au panier:</h6>
-                          <input class="col-3 mb-3 border rounded text-center" type="number" name="quantite" id="quantiteValeur" step="1" value="0" min="1" max="10" required>
+                          <input class="col-3 mb-3 border rounded text-center" type="number" name="quantite" id="quantiteValeur" step="1" value="1" min="1" max="10" required>
                    <div><a class="btn btn-secondary addPanier disabled" href="panier.html">Ajouter au panier</a></div>`;
     document.querySelector('.cameraCardProduit').innerHTML = carteProduit;
     return camArray;
@@ -73,6 +74,7 @@ fetch(url)
     });
 
     //Envoi de données vers le localStorage
+
     function ajouterItem(key) {
       key.push({
         nom: nom,
@@ -86,7 +88,6 @@ fetch(url)
 
     ajouterAuPanier.addEventListener('click', function () {
       if (localStorage.length == 0) {
-        let pannier = [];
         ajouterItem(pannier);
         localStorage.setItem('panier', JSON.stringify(pannier));
       } else {
