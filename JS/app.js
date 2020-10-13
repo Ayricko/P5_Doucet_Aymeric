@@ -1,10 +1,15 @@
+//Création d'un constante contenant l'url vers l'API
 const url = `http://localhost:3000/api/cameras`;
+//Réalisation de la requete vers l'api
 fetch(url)
+  //Transformation du resultat de la requete (response) en document json (response.json)
   .then((response) => response.json())
+  //Récuperation du resultat de response.json (qu'on appelle par un nom random (ici mainArray)) et on ouvre la fonction
   .then((mainArray) => {
+    //Construction des cartes produits
     let carteProduitIndex = ` `;
     for (let cam of mainArray) {
-      carteProduitIndex += ` <div class="col-6 col-lg mb-3">
+      carteProduitIndex += ` <div class="col-12 col-md-4 col-xl mb-3">
                             <div class="card text-center shadow">
                                 <img src="${cam.imageUrl}" class="img-fluid p-3" alt="camera vintage ${cam.name}"/>
                                 <div class="card-body">

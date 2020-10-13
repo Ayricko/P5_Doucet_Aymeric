@@ -9,7 +9,7 @@ let carteCommande = `   <p>Commande <strong>${commandes[0].objetPost.orderId}</s
                         <p>Bonjour <strong>${commandes[0].objetPost.contact.firstName}</strong> et merci pour ta commande 😉</p>`;
 
 //Si la commande ne contient qu'un article
-if (commandes[2].quantitéTotal == 1) {
+if (commandes.quantitéTotal == 1) {
   carteCommande += `         <p>Tu recevras ton <strong>${items[0].nom}</strong> chez toi, à <strong>${commandes[0].objetPost.contact.city}</strong> dans les meilleurs délais!</p>`;
 
   //Si elle contient plus d'un article

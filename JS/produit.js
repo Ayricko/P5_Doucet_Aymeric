@@ -18,25 +18,22 @@ let lensesRow;
 let lenseOption;
 let quantité;
 let carteProduit = ` `;
-let pannier = [];
 
 //Réalisation de la requete vers l'api de la camera recherchée en fonction de son id
 fetch(url)
   //Transformation du resultat de la requete (response) en document json (response.json)
   .then((response) => response.json())
   //Récuperation du resultat de response.json (qu'on appelle par un nom random (ici camArray)) et on ouvre la fonction
-  //Attribution de valeur aux variables
   .then((camArray) => {
+    //Attribution de valeur aux variables
     id = camArray._id;
     prix = camArray.price / 100;
     image = camArray.imageUrl;
     nom = camArray.name;
     description = camArray.description;
     lensesArray = camArray.lenses;
-    return camArray;
-  })
-  //Construction de la carte produit.
-  .then((camArray) => {
+
+    //Construction de la carte produit
     carteProduit += ` <img src="${image}" class="img-fluid pb-3" />
                             <div class= "row justify-content-around">
                                 <h5 class="card-title mr-3">${nom}</h5>
@@ -52,12 +49,10 @@ fetch(url)
     }
     carteProduit += `   </select>`;
     carteProduit += `<h6>Quantité de ${nom} à mettre au panier:</h6>
-                          <input class="col-3 mb-3 border rounded text-center" type="number" name="quantite" id="quantiteValeur" step="1" value="1" min="1" max="10" required>
+                          <input class="col-3 mb-3 border rounded text-center" type="number" name="quantite" id="quantiteValeur" step="1" value="0" min="1" max="10" required>
                    <div><a class="btn btn-secondary addPanier disabled" href="panier.html">Ajouter au panier</a></div>`;
     document.querySelector('.cameraCardProduit').innerHTML = carteProduit;
-    return camArray;
-  })
-  .then((camArray) => {
+
     let ajouterAuPanier = document.querySelector('.addPanier');
     //Choix de la lentille
     lensesRow = document.querySelector('select.lense');
@@ -72,11 +67,10 @@ fetch(url)
         document.querySelector('.addPanier').classList.remove('disabled');
       }
     });
-
-    //Envoi de données vers le localStorage
-
-    function ajouterItem(key) {
-      key.push({
+    //localStorage
+    //Création de la fonction de push des infos du produit dans un tableau
+    function ajouterItem(tableau) {
+      tableau.push({
         nom: nom,
         photo: image,
         quantité: quantité,
@@ -85,17 +79,15 @@ fetch(url)
         id: id,
       });
     }
-
     ajouterAuPanier.addEventListener('click', function () {
       if (localStorage.length == 0) {
+        let pannier = [];
         ajouterItem(pannier);
         localStorage.setItem('panier', JSON.stringify(pannier));
       } else {
-        let pannierInitial = localStorage.getItem('panier');
-        let newPannier = JSON.parse(pannierInitial);
+        let newPannier = JSON.parse(localStorage.getItem('panier'));
         ajouterItem(newPannier);
-        let commandeLocalStorage = JSON.stringify(newPannier);
-        localStorage.setItem('panier', commandeLocalStorage);
+        localStorage.setItem('panier', JSON.stringify(newPannier));
       }
     });
   })
