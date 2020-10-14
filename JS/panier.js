@@ -75,12 +75,12 @@ if (localStorage.length === 0 || JSON.parse(localStorage.getItem('panier')).leng
                 <form action="" method="POST" id="formulaireValidation" >
                     <div class='form-group'>
                         <label for='nom'>Nom</label>
-                        <input type='text' pattern="^[a-zA-Z ]+$" title="Dorsay" class='form-control' name='nom'required/>
+                        <input type='text' pattern="^[a-zA-Zàâäéèêëïîôöùûüç' ]+$" title="Dorsay" class='form-control' name='nom'required/>
                         <small></small>
                     </div>
                     <div class='form-group'>
                         <label for='prenom'>Prénom</label>
-                        <input type='text' pattern="^[a-zA-Z ]+$" title="Jack" class='form-control' name='prenom' required/>
+                        <input type='text' pattern="^[a-zA-Zàâäéèêëïîôöùûüç' ]+$" title="Jack" class='form-control' name='prenom' required/>
                         <small></small>
                     </div>
                     <div class='form-group'>
@@ -146,7 +146,7 @@ let form = document.querySelector('#formulaireValidation');
 // La fonction si évite un message d'erreur dans la console si le panier est vide
 if (form) {
   // RegExp
-  let prenomNomRegExp = /^[a-zA-Z ]+$/;
+  let prenomNomRegExp = /^[a-zA-Zàâäéèêëïîôöùûüç' ]+$/;
   let villeRegExp = /[a-zA-Z]{1,20}/;
   let cpRegExp = /^((0[1-9])|([1-8][0-9])|(9[0-8])|(2A)|(2B))[0-9]{3}$/;
   let adresseRegExp = /[0-9]{1,5}\s[a-zA-Z]{1,10}\s([a-zA-Z\s]{1,50}){1,5}/;
