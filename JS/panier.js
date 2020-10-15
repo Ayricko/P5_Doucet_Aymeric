@@ -193,7 +193,7 @@ if (form) {
       .then((response) => response.json())
       .then((objetPost) => {
         let commandeArray = [];
-        commandeArray.push({ objetPost }, { quantitéTotal });
+        commandeArray.push({ objetPost }, { quantitéTotal }, { prixTotal });
         localStorage.setItem('commande', JSON.stringify(commandeArray));
         document.location.href = 'commande.html';
       })

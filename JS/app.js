@@ -22,6 +22,7 @@ fetch(url)
     }
     document.querySelector('.cameraCard').innerHTML = carteProduitIndex;
   })
+  //En cas d'erreur avec le serveur
   .catch(
     (document.querySelector('.cameraCard').innerHTML = `<section class='jumBotron'>
         <div class='container'>
