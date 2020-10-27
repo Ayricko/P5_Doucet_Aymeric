@@ -7,15 +7,15 @@ const url = `http://localhost:3000/api/cameras/${camId}`;
 
 //Création des varibale à portée globale
 let id;
-let prix;
+let price;
 let image;
-let nom;
+let camName;
 let description;
 let lensesArray;
 let lensesRow;
 let lenseOption;
-let quantité;
-let carteProduit = ` `;
+let quantity;
+let cardProduct = ` `;
 
 //Réalisation de la requete vers l'api de la camera recherchée en fonction de son id
 fetch(url)
@@ -25,17 +25,17 @@ fetch(url)
   .then((camArray) => {
     //Attribution de valeur aux variables
     id = camArray._id;
-    prix = camArray.price / 100;
+    price = camArray.price / 100;
     image = camArray.imageUrl;
-    nom = camArray.name;
+    camName = camArray.name;
     description = camArray.description;
     lensesArray = camArray.lenses;
 
     //Construction de la carte produit
-    carteProduit += ` <img src="${image}" class="img-fluid pb-3" alt="caméra vintage ${nom}"/>
+    cardProduct += ` <img src="${image}" class="img-fluid pb-3" alt="caméra vintage ${camName}"/>
                             <div class= "row justify-content-around">
-                                <h5 class="card-title mr-3">${nom}</h5>
-                                <div class="price card-text ml-3">${prix} €</div>
+                                <h5 class="card-title mr-3">${camName}</h5>
+                                <div class="price card-text ml-3">${price} €</div>
                             </div>
                             <div class="card card-body mb-3">
                                 <div class="description card-text">${description}</div>
@@ -43,15 +43,15 @@ fetch(url)
                             <select class='lense form-control mb-3 text-center'>
                             <option>Choisissez votre lentille</option>`;
     for (let lense of lensesArray) {
-      carteProduit += `<option>${lense}</option>`;
+      cardProduct += `<option>${lense}</option>`;
     }
-    carteProduit += `   </select>
-                        <p>Quantité de <strong>${nom}</strong> à mettre au panier:</p>
+    cardProduct += `   </select>
+                        <p>Quantité de <strong>${camName}</strong> à mettre au panier:</p>
                         <input class="col-3 mb-3 border rounded text-center" type="number" step="1" value="0" min="1" max="10">
                         <div>
-                          <button type="button" class="btn btn-secondary addPanier">Ajouter au panier</button>
+                          <button type="button" class="btn btn-secondary addBasket">Ajouter au panier</button>
                         </div>`;
-    document.querySelector('.cameraCardProduit').innerHTML = carteProduit;
+    document.querySelector('.cameraCardProduit').innerHTML = cardProduct;
 
     //Choix de la lentille
     lensesRow = document.querySelector('select.lense');
@@ -59,37 +59,37 @@ fetch(url)
       lenseOption = this.options[this.selectedIndex].text;
     });
     //Quantité souhaitée
-    let quantitéChoix = document.querySelector('input');
-    quantitéChoix.addEventListener('change', function () {
-      quantité = this.value;
+    let quantityChoise = document.querySelector('input');
+    quantityChoise.addEventListener('change', function () {
+      quantity = this.value;
     });
 
     //localStorage
     //Création de la fonction de push des infos du produit dans un tableau
-    function ajouterItem(tableau) {
+    function addItem(tableau) {
       tableau.push({
-        nom: nom,
+        name: camName,
         photo: image,
-        quantité: quantité,
-        prixTotal: quantité * prix,
-        lentille: lenseOption,
+        quantity: quantity,
+        priceTotal: quantity * price,
+        lense: lenseOption,
         id: id,
       });
     }
-    document.querySelector('.addPanier').addEventListener('click', function () {
+    document.querySelector('.addBasket').addEventListener('click', function () {
       //Message d'alerte s'il manque la quantité ou l'option de lentille
-      if (lenseOption == 'Choisissez votre lentille' || quantité == 0 || lenseOption == undefined || quantité == undefined) {
+      if (lenseOption == 'Choisissez votre lentille' || quantity == 0 || lenseOption == undefined || quantity == undefined) {
         alert('Merci de choisir une option de lentille ou de modifier la quantité désirée');
       } else {
         if (localStorage.length == 0) {
-          let pannier = [];
-          ajouterItem(pannier);
-          localStorage.setItem('panier', JSON.stringify(pannier));
+          let basket = [];
+          addItem(basket);
+          localStorage.setItem('basket', JSON.stringify(basket));
           document.location.href = 'panier.html';
         } else {
-          let newPannier = JSON.parse(localStorage.getItem('panier'));
-          ajouterItem(newPannier);
-          localStorage.setItem('panier', JSON.stringify(newPannier));
+          let newBasket = JSON.parse(localStorage.getItem('basket'));
+          addItem(newBasket);
+          localStorage.setItem('basket', JSON.stringify(newBasket));
           document.location.href = 'panier.html';
         }
       }

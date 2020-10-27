@@ -1,12 +1,12 @@
 // Nombre de référence associé à l'onglet panier dans la barre de naviguation
 if (localStorage.length != 0) {
-  let array = localStorage.getItem('panier');
+  let array = localStorage.getItem('basket');
   let items = JSON.parse(array);
   let quantitéT = 0;
   let quantitéI;
 
   for (let item of items) {
-    quantitéI = parseInt(item.quantité);
+    quantitéI = parseInt(item.quantity);
     quantitéT += quantitéI;
   }
   if (quantitéT < 1) {

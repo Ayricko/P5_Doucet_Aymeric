@@ -7,9 +7,9 @@ fetch(url)
   //Récuperation du resultat de response.json (qu'on appelle par un nom random (ici mainArray)) et on ouvre la fonction
   .then((mainArray) => {
     //Construction des cartes produits
-    let carteProduitIndex = ` `;
+    let cardProductIndex = ` `;
     for (let cam of mainArray) {
-      carteProduitIndex += ` <div class="col-12 col-md-4 col-xl mb-3">
+      cardProductIndex += ` <div class="col-12 col-md-4 col-xl mb-3">
                             <div class="card text-center shadow">
                                 <img src="${cam.imageUrl}" class="img-fluid p-3" alt="camera vintage ${cam.name}"/>
                                 <div class="card-body">
@@ -20,7 +20,7 @@ fetch(url)
                             </div>
                         </div>`;
     }
-    document.querySelector('.cameraCard').innerHTML = carteProduitIndex;
+    document.querySelector('.cameraCard').innerHTML = cardProductIndex;
   })
   //En cas d'erreur avec le serveur
   .catch(

@@ -1,67 +1,67 @@
 // Création des différentes variables à portée globale
-let carteProduit = ` `;
-let commandeRecap = ` `;
-let carteValidation = ` `;
-let quantitéItem;
-let prixItem;
-let quantitéTotal = 0;
-let prixTotal = 0;
+let cardProduct = ` `;
+let orderRecap = ` `;
+let cardValidation = ` `;
+let quantityItem;
+let priceItem;
+let quantityTotal = 0;
+let priceTotal = 0;
 const products = [];
 
 // Action si le localStorage est vide
-if (localStorage.length === 0 || JSON.parse(localStorage.getItem('panier')).length === 0) {
-  carteProduit += `<h5 class="col text-center bg-secondary py-4 rounded">Votre panier est vide</h5>`;
-  document.querySelector('.items').innerHTML = carteProduit;
+if (localStorage.length === 0 || JSON.parse(localStorage.getItem('basket')).length === 0) {
+  cardProduct += `<h5 class="col text-center bg-secondary py-4 rounded">Votre panier est vide</h5>`;
+  document.querySelector('.items').innerHTML = cardProduct;
 
   // Affichage des produits dans le panier
 } else {
-  let array = localStorage.getItem('panier');
+  let array = localStorage.getItem('basket');
   let items = JSON.parse(array);
   for (let item of items) {
-    carteProduit += `<div class="row bg-secondary rounded py-3 mb-2">
+    cardProduct += `<div class="row bg-secondary rounded py-3 mb-2">
                         <div class="col-12 col-md-3 pb-2 pb-md-0 m-auto mx-lg-0">
-                            <img src="${item.photo}" class="img-fluid " alt="camera vintage ${item.nom}"/>
+                            <img src="${item.photo}" class="img-fluid " alt="camera vintage ${item.name}"/>
                         </div>
                         <div class="col-md-2 my-auto text-center">
-                            <h5 class="m-0">${item.nom}</h5>
+                            <h5 class="m-0">${item.name}</h5>
                         </div>
                         <div class="col-md-2 my-auto text-center">
-                            <strong>Lentille:</strong> ${item.lentille}
+                            <strong>Lentille:</strong> ${item.lense}
                         </div>
                         <div class="col-md-2 my-auto text-center">
-                            <strong>Qté:</strong> ${item.quantité}
+                            <strong>Qté:</strong> ${item.quantity}
                         </div>
                         <div class="col-md-2 my-auto text-center">
-                            <strong>Prix:</strong> ${item.prixTotal} €
+                            <strong>Prix:</strong> ${item.priceTotal} €
                         </div>
-                            <button type="button" onclick="supprimerItem('${item.id}')" class="btn border m-auto text-center">X</button>
+                            <button type="button" onclick="deleteItem('${item.id}')" class="btn border m-auto text-center">X</button>
                         </div>
                     </div>`;
-    document.querySelector('.items').innerHTML = carteProduit;
+    document.querySelector('.items').innerHTML = cardProduct;
 
     // Affichage du récapitulatif de commande
     // Calcul de la quantité total d'article
-    quantitéItem = parseInt(item.quantité);
-    quantitéTotal += quantitéItem;
+    quantityItem = parseInt(item.quantity);
+    quantityTotal += quantityItem;
 
     // Calcul du prix total
-    prixItem = parseInt(item.prixTotal);
-    prixTotal += prixItem;
-    if (quantitéTotal > 1) {
-      commandeRecap = ` <div class="col-12 text-center bg-secondary py-2 rounded">
-      Articles: <strong>${quantitéTotal}</strong> - Montant total: <strong>${prixTotal}€</strong>
+    priceItem = parseInt(item.priceTotal);
+    priceTotal += priceItem;
+    if (quantityTotal > 1) {
+      orderRecap = ` <div class="col-12 text-center bg-secondary py-2 rounded">
+      Articles: <strong>${quantityTotal}</strong> - Montant total: <strong>${priceTotal}€</strong>
                         </div>`;
-      document.querySelector('.recapCommande').innerHTML = commandeRecap;
+      document.querySelector('.orderRecap').innerHTML = orderRecap;
     } else {
-      commandeRecap = `<div class="col text-center bg-secondary py-2 rounded">Montant total: <strong>${prixTotal}€</strong>`;
-      document.querySelector('.recapCommande').innerHTML = commandeRecap;
+      orderRecap = `<div class="col text-center bg-secondary py-2 rounded">Montant total: <strong>${priceTotal}€</strong>`;
+      document.querySelector('.orderRecap').innerHTML = orderRecap;
     }
     // Push des item.id dans la variable products pour requete Post
     products.push(item.id);
   }
 
   // Insertion du formulaire dans le panier
-  carteValidation += `
+  cardValidation += `
     <div class='container'>
         <div class='row pt-2 justify-content-around'>
             <p>
@@ -72,25 +72,25 @@ if (localStorage.length === 0 || JSON.parse(localStorage.getItem('panier')).leng
         </div>
         <div class='collapse ' id='collapseExample'>
             <div class='card card-body col-lg-6 mx-1 mx-lg-auto'>
-                <form action="" method="POST" id="formulaireValidation" >
+                <form action="" method="POST" id="formValidation" >
                     <div class='form-group'>
-                        <label for='nom'>Nom</label>
-                        <input type='text' pattern="^[a-zA-Zàâäéèêëïîôöùûüç' ]+$" title="Dorsay" class='form-control' name='nom'required/>
+                        <label for='lastName'>Nom</label>
+                        <input type='text' pattern="^[a-zA-Zàâäéèêëïîôöùûüç' ]+$" title="Dorsay" class='form-control' name='lastName'required/>
                         <small></small>
                     </div>
                     <div class='form-group'>
-                        <label for='prenom'>Prénom</label>
-                        <input type='text' pattern="^[a-zA-Zàâäéèêëïîôöùûüç' ]+$" title="Jack" class='form-control' name='prenom' required/>
+                        <label for='firstName'>Prénom</label>
+                        <input type='text' pattern="^[a-zA-Zàâäéèêëïîôöùûüç' ]+$" title="Jack" class='form-control' name='firstName' required/>
                         <small></small>
                     </div>
                     <div class='form-group'>
-                        <label for='adresse'>Adresse</label>
-                        <input type='text' pattern="[0-9]{1,3}(([,. ]?){1}[-a-zA-Zàâäéèêëïîôöùûüç']+)*" title="16 rue ..." class='form-control' name='adresse' placeholder='Numéro rue...' required/>
+                        <label for='adress'>Adresse</label>
+                        <input type='text' pattern="[0-9]{1,3}(([,. ]?){1}[-a-zA-Zàâäéèêëïîôöùûüç']+)*" title="16 rue ..." class='form-control' name='adress' placeholder='Numéro rue...' required/>
                         <small></small>
                     </div>
                     <div class='form-group'>
-                        <label for='ville'>Ville</label>
-                        <input type='text' pattern="[a-zA-Z ]{1,20}" title="La Roche Sur Yon" class='form-control' name='ville' required/>
+                        <label for='town'>Ville</label>
+                        <input type='text' pattern="[a-zA-Z ]{1,20}" title="La Roche Sur Yon" class='form-control' name='town' required/>
                         <small></small>
                     </div>
                     <div class='form-group'>
@@ -111,15 +111,15 @@ if (localStorage.length === 0 || JSON.parse(localStorage.getItem('panier')).leng
         </div>
     </div>
     <div class="row m-5"></div>`;
-  document.querySelector('.formulaire').innerHTML = carteValidation;
+  document.querySelector('.formulaire').innerHTML = cardValidation;
 }
 
 // Suppresion des articles dans le panier
 // Création de la fonction associé au onclick du bouton supprimer
-function supprimerItem(id) {
-  const items = JSON.parse(localStorage.getItem('panier'));
+function deleteItem(id) {
+  const items = JSON.parse(localStorage.getItem('basket'));
   const newItems = items.filter((item) => item.id != id);
-  localStorage.setItem('panier', JSON.stringify(newItems));
+  localStorage.setItem('basket', JSON.stringify(newItems));
   document.location.href = 'panier.html';
 }
 
@@ -141,30 +141,30 @@ function validationRegExp(champCible, regExp, message) {
 }
 
 // Création de la varibale form pour accrocher les infos du formulaire
-let form = document.querySelector('#formulaireValidation');
+let form = document.querySelector('#formValidation');
 
 // La fonction si évite un message d'erreur dans la console si le panier est vide
 if (form) {
   // RegExp
-  let prenomNomRegExp = /^[a-zA-Zàâäéèêëïîôöùûüç' ]+$/;
-  let villeRegExp = /[a-zA-Z]{1,20}/;
+  let nameRegExp = /^[a-zA-Zàâäéèêëïîôöùûüç' ]+$/;
+  let townRegExp = /[a-zA-Z]{1,20}/;
   let cpRegExp = /^((0[1-9])|([1-8][0-9])|(9[0-8])|(2A)|(2B))[0-9]{3}$/;
-  let adresseRegExp = /[0-9]{1,5}\s[a-zA-Z]{1,10}\s([a-zA-Z\s]{1,50}){1,5}/;
+  let adressRegExp = /[0-9]{1,5}\s[a-zA-Z]{1,10}\s([a-zA-Z\s]{1,50}){1,5}/;
   let emailRegExp = /[a-zA-Z0-9\.]{1,50}@[a-zA-Z]{1,50}\.[a-zA-Z]{1,8}/;
 
   // Variable des input => utilisation dans la validation des champs et dans l'envoi des données pour la confirmation de commande
-  let nom = form.nom;
-  let prenom = form.prenom;
-  let ville = form.ville;
-  let adresse = form.adresse;
+  let lastName = form.lastName;
+  let firstName = form.firstName;
+  let town = form.town;
+  let adress = form.adress;
   let cp = form.cp;
   let email = form.email;
 
   // Validation des champs
-  validationRegExp(nom, prenomNomRegExp, 'Nom');
-  validationRegExp(prenom, prenomNomRegExp, 'Prénom');
-  validationRegExp(ville, villeRegExp, 'Ville');
-  validationRegExp(adresse, adresseRegExp, 'Adresse');
+  validationRegExp(lastName, nameRegExp, 'Nom');
+  validationRegExp(firstName, nameRegExp, 'Prénom');
+  validationRegExp(town, townRegExp, 'Ville');
+  validationRegExp(adress, adressRegExp, 'Adresse');
   validationRegExp(cp, cpRegExp, 'Code_postale');
   validationRegExp(email, emailRegExp, 'email');
 
@@ -174,10 +174,10 @@ if (form) {
     e.preventDefault();
     // Création de l'objet contact
     const contact = {
-      firstName: prenom.value,
-      lastName: nom.value,
-      address: adresse.value,
-      city: ville.value,
+      firstName: firstName.value,
+      lastName: lastName.value,
+      address: adress.value,
+      city: town.value,
       email: email.value,
     };
 
@@ -193,8 +193,8 @@ if (form) {
       .then((response) => response.json())
       .then((objetPost) => {
         let commandeArray = [];
-        commandeArray.push({ objetPost }, { quantitéTotal }, { prixTotal });
-        localStorage.setItem('commande', JSON.stringify(commandeArray));
+        commandeArray.push({ objetPost }, { quantityTotal }, { priceTotal });
+        localStorage.setItem('order', JSON.stringify(commandeArray));
         document.location.href = 'commande.html';
       })
       .catch(function () {
