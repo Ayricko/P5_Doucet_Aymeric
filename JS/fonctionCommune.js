@@ -2,18 +2,18 @@
 if (localStorage.length != 0) {
   let array = localStorage.getItem('basket');
   let items = JSON.parse(array);
-  let quantitéT = 0;
-  let quantitéI;
+  let quantityT = 0;
+  let quantityI;
 
   for (let item of items) {
-    quantitéI = parseInt(item.quantity);
-    quantitéT += quantitéI;
+    quantityI = parseInt(item.quantity);
+    quantityT += quantityI;
   }
-  if (quantitéT < 1) {
+  if (quantityT < 1) {
     let navBarPanier = document.querySelector('.panier');
     navBarPanier.innerHTML = `Panier vide`;
   } else {
     let navBarPanier = document.querySelector('.panier');
-    navBarPanier.innerHTML = `Panier ${quantitéT}`;
+    navBarPanier.innerHTML = `Panier ${quantityT}`;
   }
 }

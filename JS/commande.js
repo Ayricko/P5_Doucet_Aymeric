@@ -5,7 +5,6 @@ let array = localStorage.getItem('basket');
 let items = JSON.parse(array);
 
 let cardOrder = ` `;
-console.log(orderData.quantityTotal);
 //Si le localStorage est vide
 if (localStorage.length === 0) {
   cardOrder += `<h5 class="col text-center bg-secondary py-4 rounded">Aucune commande en cours</h5>`;
